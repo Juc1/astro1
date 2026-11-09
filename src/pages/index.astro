@@ -23,15 +23,17 @@ import { articles } from '../data/articles';
 	<section class="hero bg-base-100 rounded-3xl p-8 md:p-12 shadow-sm border border-base-300 mb-12">
 		<div class="hero-content text-center max-w-2xl">
 			<div>
-				<div class="badge badge-outline badge-primary font-semibold mb-4 px-3 py-1">
-					Stage 1: Local Testbed Running
+				{/* Badge indicating Stage 3 deployment status */}
+				<div class="badge badge-success font-semibold mb-4 px-3 py-1 gap-2 text-success-content">
+					<span class="inline-block w-2 h-2 rounded-full bg-success-content animate-pulse"></span>
+					Stage 3: Live on Cloudflare Edge
 				</div>
 				<h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">
 					Modern Headless Front End
 				</h1>
 				<p class="py-4 text-base-content/75 text-base md:text-lg leading-relaxed">
 					This Astro application is styled with <strong>Tailwind CSS v4</strong> and <strong>daisyUI</strong>. 
-					Currently displaying local mock data, ready to be pushed to GitHub and connected to Drupal.
+					Deployed live to Cloudflare Edge via GitHub CI/CD, preparing for Stage 4 Drupal integration.
 				</p>
 				<div class="flex justify-center gap-3 mt-2">
 					<a href="#articles" class="btn btn-primary">
