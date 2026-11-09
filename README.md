@@ -3,6 +3,7 @@
 A high-performance, modern headless frontend built with **Astro**, **Tailwind CSS v4**, and **daisyUI v5**, designed to decouple from CMS backends like **Drupal 11** or **WordPress**.
 
 * **Live Production URL:** [https://astro1.jr5689.workers.dev](https://astro1.jr5689.workers.dev)
+* **Live Demo Blog Post:** [https://astro1.jr5689.workers.dev/blog/headless-drupal-with-astro/](https://astro1.jr5689.workers.dev/blog/headless-drupal-with-astro/)
 * **GitHub Repository:** [https://github.com/Juc1/astro1](https://github.com/Juc1/astro1)
 
 ---
@@ -134,5 +135,8 @@ npm run preview
 
 * [x] **Stage 1: Local Testbed** — Install Astro v7, Tailwind v4, daisyUI v5, and build mock article layout.
 * [x] **Stage 2: Git & GitHub** — Initialized git repository and pushed to [https://github.com/Juc1/astro1](https://github.com/Juc1/astro1).
-* [x] **Stage 3: Edge Hosting** — Deployed and running live on Cloudflare at [https://astro1.jr5689.workers.dev](https://astro1.jr5689.workers.dev).
-* [ ] **Stage 4: Headless Drupal Connection** — Enable Drupal JSON:API and replace mock data with live Drupal articles and images.
+* [x] **Stage 3: Edge Hosting** — Deployed and running live on Cloudflare at [https://astro1.jr5689.workers.dev](https://astro1.jr5689.workers.dev) with automated GitHub CI/CD triggers.
+* [ ] **Stage 4: Headless Drupal 11 Canvas Integration**
+  * **Verified Live API Endpoint:** `GET https://193whitecrossstreet.london/jsonapi/canvas_page/canvas_page`
+  * **Discovered Entities:** All 6 Canvas Pages (`Home`, `Treatments`, `Practitioners`, `Room Rental`, `Contact`, `Blog`) already expose their full component tree, slots, parent UUIDs, and resolved props via core JSON:API!
+  * **Next Action:** Build matching Astro components for the SDCs used in Drupal (`daisy-hero`, `heading`, `text`, `card`) and dynamic page resolver (`src/pages/[...slug].astro`).
