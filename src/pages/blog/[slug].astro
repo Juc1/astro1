@@ -1,0 +1,184 @@
+---
+/**
+ * ===================================================================
+ * Blog Post Detail Page (src/pages/blog/[slug].astro)
+ * ===================================================================
+ *
+ * This is a dynamic route in Astro. In Static (SSG) mode, Astro uses
+ * the `getStaticPaths()` function below to generate an HTML page for
+ * every article in our data store at build time.
+ *
+ * In Stage 4, `getStaticPaths()` will query Drupal's JSON:API endpoint
+ * (`/jsonapi/node/article`) to generate pages for every published node!
+ */
+
+import Layout from '../../layouts/Layout.astro';
+import { articles, type Article } from '../../data/articles';
+
+// getStaticPaths tells Astro which slugs exist at build time
+export async function getStaticPaths() {
+	return articles.map((article) => ({
+		params: { slug: article.slug },
+		props: { article }
+	}));
+}
+
+// TypeScript interface for props received from getStaticPaths
+interface Props {
+	article: Article;
+}
+
+// Destructure the article prop
+const { article } = Astro.props;
+---
+
+<Layout title={`${article.title} | Astro Blog`}>
+	<!-- Breadcrumbs Navigation using daisyUI -->
+	<nav class="text-sm breadcrumbs mb-6 text-base-content/70">
+		<ul>
+			<li><a href="/" class="hover:text-primary">Home</a></li>
+			<li><a href="/#articles" class="hover:text-primary">Articles</a></li>
+			<li class="font-medium text-base-content truncate max-w-xs md:max-w-md">{article.title}</li>
+		</ul>
+	</nav>
+
+	<article class="max-w-4xl mx-auto bg-base-100 rounded-3xl p-6 md:p-12 shadow-sm border border-base-300">
+		<!-- Article Header Section -->
+		<header class="mb-8 border-b border-base-200 pb-8">
+			<!-- Category Badge & Read Time -->
+			<div class="flex items-center gap-3 mb-4">
+				<span class="badge badge-primary font-medium px-3 py-1">
+					{article.category}
+				</span>
+				<span class="text-sm text-base-content/60">
+					{article.readTime}
+				</span>
+			</div>
+
+			<!-- Main Article Title -->
+			<h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-base-content leading-tight mb-6">
+				{article.title}
+			</h1>
+
+			<!-- Author Metadata Row with Avatar -->
+			<div class="flex items-center justify-between flex-wrap gap-4 pt-4 border-t border-base-200">
+				<div class="flex items-center gap-4">
+					<div class="avatar">
+						<div class="w-12 h-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
+							<img src={article.author.avatar} alt={article.author.name} />
+						</div>
+					</div>
+					<div>
+						<div class="font-bold text-base-content text-base">
+							{article.author.name}
+						</div>
+						<div class="text-xs text-base-content/60">
+							{article.author.role} • <time>{article.date}</time>
+						</div>
+					</div>
+				</div>
+
+				<!-- Share / Bookmark Action buttons -->
+				<div class="flex items-center gap-2">
+					<button class="btn btn-ghost btn-sm btn-circle" title="Share Article" aria-label="Share">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+						</svg>
+					</button>
+					<button class="btn btn-ghost btn-sm btn-circle" title="Bookmark" aria-label="Bookmark">
+						<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+						</svg>
+					</button>
+				</div>
+			</div>
+		</header>
+
+		<!-- Featured Hero Image -->
+		<figure class="mb-10 rounded-2xl overflow-hidden shadow-md">
+			<img 
+				src={article.imageUrl} 
+				alt={article.title} 
+				class="w-full h-80 md:h-[450px] object-cover"
+			/>
+		</figure>
+
+		<!-- Article Body Content (rendered from HTML data) -->
+		<div class="article-body space-y-6 text-base-content/90 text-lg leading-relaxed">
+			<Fragment set:html={article.content} />
+		</div>
+
+		<!-- Author Bio Card at Bottom -->
+		<div class="mt-12 p-6 md:p-8 bg-base-200 rounded-2xl flex flex-col md:flex-row items-center gap-6 border border-base-300">
+			<div class="avatar">
+				<div class="w-20 h-20 rounded-full ring ring-secondary ring-offset-base-100 ring-offset-2 overflow-hidden">
+					<img src={article.author.avatar} alt={article.author.name} />
+				</div>
+			</div>
+			<div class="text-center md:text-left">
+				<h3 class="font-bold text-lg text-base-content">
+					Written by {article.author.name}
+				</h3>
+				<p class="text-sm text-base-content/70 mt-1">
+					{article.author.role} focused on distributed web architectures, headless CMS performance, and modern developer tooling.
+				</p>
+			</div>
+		</div>
+
+		<!-- Navigation Footer: Back to Articles Button -->
+		<div class="mt-10 pt-6 border-t border-base-200 flex justify-between items-center">
+			<a href="/#articles" class="btn btn-outline btn-sm rounded-lg">
+				← Back to All Articles
+			</a>
+			<a href="#top" class="text-sm text-primary hover:underline">
+				Back to Top ↑
+			</a>
+		</div>
+	</article>
+
+	<!-- Interactive Comments Placeholder ("Island" concept) -->
+	<section class="max-w-4xl mx-auto mt-8 bg-base-100 rounded-3xl p-6 md:p-8 shadow-sm border border-base-300">
+		<div class="flex items-center justify-between mb-6">
+			<h3 class="text-xl font-bold text-base-content">
+				Discussion (Demo Island)
+			</h3>
+			<span class="badge badge-outline">2 Comments</span>
+		</div>
+
+		<!-- Sample Comments List -->
+		<div class="space-y-4">
+			<div class="p-4 bg-base-200/50 rounded-xl border border-base-200">
+				<div class="flex items-center justify-between mb-2">
+					<span class="font-semibold text-sm">David Miller</span>
+					<span class="text-xs text-base-content/50">2 hours ago</span>
+				</div>
+				<p class="text-sm text-base-content/80">
+					This headless setup makes so much sense. We moved our Drupal blog to Astro last month and our Lighthouse performance jumped from 62 to 99 on mobile.
+				</p>
+			</div>
+
+			<div class="p-4 bg-base-200/50 rounded-xl border border-base-200">
+				<div class="flex items-center justify-between mb-2">
+					<span class="font-semibold text-sm">Emma Watson</span>
+					<span class="text-xs text-base-content/50">Yesterday</span>
+				</div>
+				<p class="text-sm text-base-content/80">
+					Looking forward to Stage 4 where we connect Drupal JSON:API directly!
+				</p>
+			</div>
+		</div>
+
+		<!-- Leave a comment input preview -->
+		<div class="mt-6 pt-4 border-t border-base-200 flex gap-2">
+			<input 
+				type="text" 
+				placeholder="Add to the discussion..." 
+				class="input input-bordered input-sm flex-grow" 
+				disabled
+			/>
+			<button class="btn btn-primary btn-sm" disabled>
+				Post Comment
+			</button>
+		</div>
+	</section>
+</Layout>

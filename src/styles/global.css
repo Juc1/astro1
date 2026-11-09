@@ -1,0 +1,14 @@
+/*
+ * ===================================================================
+ * Global Stylesheet for Astro with Tailwind CSS v4 and daisyUI
+ * ===================================================================
+ *
+ * 1. @import "tailwindcss" loads the Tailwind v4 engine, utility classes,
+ *    and theme configurations.
+ * 2. @plugin "daisyui" enables the daisyUI component library (cards,
+ *    buttons, hero sections, badges, modals, etc.) directly inside
+ *    the Tailwind v4 compiler pipeline.
+ */
+
+@import "tailwindcss";
+@plugin "daisyui";

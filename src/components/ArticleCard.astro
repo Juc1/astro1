@@ -1,0 +1,85 @@
+---
+/**
+ * ===================================================================
+ * ArticleCard Component (src/components/ArticleCard.astro)
+ * ===================================================================
+ *
+ * This component represents a single article card in the grid.
+ * It links to the full blog post detail page via its `slug`.
+ *
+ * Props:
+ *  - slug (string): URL-friendly identifier for the post route
+ *  - title (string): The title of the article
+ *  - excerpt (string): A short summary / teaser of the content
+ *  - category (string): Taxonomy category or topic tag
+ *  - imageUrl (string): URL to the article's featured image
+ *  - date (string): Formatted publication date
+ *  - readTime (string): Estimated reading duration (e.g. '5 min read')
+ */
+
+// Define the TypeScript interface for props
+interface Props {
+	slug: string;
+	title: string;
+	excerpt: string;
+	category: string;
+	imageUrl: string;
+	date: string;
+	readTime: string;
+}
+
+// Destructure the incoming props
+const { slug, title, excerpt, category, imageUrl, date, readTime } = Astro.props;
+---
+
+<!-- daisyUI Card component with hover animation and responsive width -->
+<article class="card bg-base-100 shadow-md hover:shadow-xl transition-all duration-300 border border-base-300 flex flex-col h-full group">
+	<!-- Featured Image container linking to the full blog post -->
+	<figure class="relative h-48 w-full overflow-hidden bg-base-300">
+		<a href={`/blog/${slug}`} class="block w-full h-full">
+			<img 
+				src={imageUrl} 
+				alt={title} 
+				class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" 
+				loading="lazy"
+			/>
+		</a>
+		<!-- Category Badge placed over the image -->
+		<div class="absolute top-3 right-3 pointer-events-none">
+			<span class="badge badge-primary font-medium shadow-sm">
+				{category}
+			</span>
+		</div>
+	</figure>
+
+	<!-- Card Body containing title, excerpt, and metadata -->
+	<div class="card-body p-6 flex flex-col justify-between flex-grow">
+		<div>
+			<!-- Publication date and read time metadata -->
+			<div class="flex items-center gap-2 text-xs text-base-content/60 mb-2">
+				<time>{date}</time>
+				<span>•</span>
+				<span>{readTime}</span>
+			</div>
+
+			<!-- Article Title linking to the post detail route -->
+			<h2 class="card-title text-xl font-bold group-hover:text-primary transition-colors leading-snug">
+				<a href={`/blog/${slug}`}>
+					{title}
+				</a>
+			</h2>
+
+			<!-- Excerpt / Summary -->
+			<p class="text-base-content/80 text-sm mt-3 line-clamp-3">
+				{excerpt}
+			</p>
+		</div>
+
+		<!-- Card Action Footer with Read Article button -->
+		<div class="card-actions justify-end mt-6 pt-4 border-t border-base-200">
+			<a href={`/blog/${slug}`} class="btn btn-primary btn-sm rounded-lg hover:shadow-md">
+				Read Article →
+			</a>
+		</div>
+	</div>
+</article>

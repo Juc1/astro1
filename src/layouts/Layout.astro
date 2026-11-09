@@ -1,0 +1,70 @@
+---
+/**
+ * ===================================================================
+ * Main Layout Component (src/layouts/Layout.astro)
+ * ===================================================================
+ *
+ * This layout serves as the primary HTML wrapper for all pages.
+ * It imports the global stylesheet containing Tailwind CSS v4 and daisyUI.
+ *
+ * Props:
+ *  - title (string): The title to display in the browser tab.
+ */
+
+// Import the global stylesheet containing Tailwind CSS v4 and daisyUI plugin
+import '../styles/global.css';
+
+// Define the TypeScript interface for the component props
+interface Props {
+	title?: string;
+}
+
+// Destructure props with a default fallback title
+const { title = 'Astro + Tailwind + daisyUI' } = Astro.props;
+---
+
+<!doctype html>
+<!-- data-theme="light" sets daisyUI's clean default light theme -->
+<html lang="en" data-theme="light">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body class="min-h-screen bg-base-200 text-base-content flex flex-col font-sans">
+		<!-- Header / Navigation Bar using daisyUI classes -->
+		<header class="navbar bg-base-100 shadow-sm px-4 md:px-8">
+			<div class="flex-1">
+				<a href="/" class="btn btn-ghost text-xl font-bold tracking-tight text-primary">
+					Astro Headless
+				</a>
+			</div>
+			<div class="flex-none">
+				<ul class="menu menu-horizontal px-1 font-medium gap-1">
+					<li><a href="/" class="active">Home</a></li>
+					<li><a href="#articles">Articles</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div>
+		</header>
+
+		<!-- Main Content Slot where page-specific content will be rendered -->
+		<main class="flex-grow container mx-auto px-4 py-8 max-w-6xl">
+			<slot />
+		</main>
+
+		<!-- Footer using daisyUI classes -->
+		<footer class="footer footer-center p-6 bg-base-100 text-base-content border-t border-base-300">
+			<aside>
+				<p class="text-sm opacity-75">
+					Built with <span class="font-semibold text-primary">Astro</span>, 
+					<span class="font-semibold text-secondary">Tailwind CSS</span>, and 
+					<span class="font-semibold text-accent">daisyUI</span>.
+				</p>
+			</aside>
+		</footer>
+	</body>
+</html>
